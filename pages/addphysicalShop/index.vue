@@ -1,4 +1,5 @@
 <template>
+  <!-- 添加实体店 -->
   <div>
     <div class="head-seat"></div>
     <!-- <el-amap vid="amap"></el-amap> -->

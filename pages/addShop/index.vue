@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 添加店铺 -->
     <div class="head-seat"></div>
     <div class="add-library">
       <el-form ref="shop" :model="form" :rules="rules" label-width="85px">

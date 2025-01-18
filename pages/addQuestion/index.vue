@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 新增问答 暂时无用 -->
     <div class="head-seat"></div>
     <div class="add-library">
       <el-form ref="library" :model="library" :rules="rules" label-width="80px">

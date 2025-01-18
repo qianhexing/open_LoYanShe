@@ -1,4 +1,5 @@
 <template>
+    <!-- 社区板块 -->
   <div class="pub-background">
     <div class="head-seat"></div>
     <!-- {{community}} -->
