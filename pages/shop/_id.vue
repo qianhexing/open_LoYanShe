@@ -10,7 +10,7 @@
          <i slot="suffix" class="el-input__icon el-icon-close" style="cursor: pointer;" @click="clearSearch()"></i>
          <i slot="suffix" class="el-input__icon el-icon-search" style="cursor: pointer;" @click="search()"></i>
       </el-input>
-      <div style="display: flex; justify-content: center;">
+      <div style="display: flex; justify-content: center;flex-wrap: wrap">
         <nuxt-link :to="'/advancedSearch/shop'">
           <el-button size="medium" type="primary" style="margin: 0 10px;">高级检索</el-button>
         </nuxt-link>
