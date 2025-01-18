@@ -14,11 +14,14 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    imageSize: {
+      type: Number,
+      default: 300
     }
   },
   data () {
     return {
-      imageSize: 300
     }
   },
   computed: {
