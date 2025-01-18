@@ -1,5 +1,4 @@
-QQ群号:1026796048
-![](doc/group_qrcode.jpg)
+<img src="doc/group_qrcode.jpg" alt="Alt Text" width="300" height="400">
 
 # 1.访问lo研社git仓库
 `https://github.com/qianhexing/open_LoYanShe`
