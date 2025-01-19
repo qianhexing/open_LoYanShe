@@ -29,11 +29,11 @@
               <nav>旧版</nav>
             </a> -->
           </div>
-          <div class="right-fun" v-if="$store.state.user.info !== null">
+          <div v-if="$store.state.user.info !== null" class="right-fun">
             <el-badge is-dot :hidden="!has_notice">
               <nuxt-link :to="'/message'">
                 <div class="right-fun-list">
-                  <i class="iconfont icon-xiaoxitongzhi right-icon"></i>
+                  <i class="iconfont icon-xiaoxitongzhi right-icon" />
                   消息
                 </div>
               </nuxt-link>
@@ -43,7 +43,8 @@
             <el-popover
               placement="bottom"
               width="150"
-              trigger="hover">
+              trigger="hover"
+            >
               <div class="base-user-menu">
                 <nuxt-link :to="'/userSpace/' + $store.state.user.info.user_id">
                   <div class="base-user-menu-list">
@@ -59,24 +60,25 @@
                   退出登录
                 </div>
               </div>
-              <div class="base-head-user" slot="reference">
+              <div slot="reference" class="base-head-user">
                 <div class="base-head-user-face">
-                  <img :src="BASE_IMG + $store.state.user.info.user_face" >
+                  <img :src="BASE_IMG + $store.state.user.info.user_face">
                 </div>
               </div>
             </el-popover>
           </div>
-          <nuxt-link class="base-nav-list" :to="'/login'" v-if="$store.state.user.info === null || !$store.state.user.info">
+          <nuxt-link v-if="$store.state.user.info === null || !$store.state.user.info" class="base-nav-list" :to="'/login'">
             登录
           </nuxt-link>
           <div class="base-head-menu">
-            <i class="el-icon-menu" @click="menu = true"></i>
+            <i class="el-icon-menu" @click="menu = true" />
           </div>
         </div>
         <el-drawer
           :visible.sync="menu"
           :direction="'rtl'"
-          :modal="false">
+          :modal="false"
+        >
           <nuxt-link
             :to="`/`"
             title="洛丽塔图书馆"
@@ -84,22 +86,34 @@
             active-class="active"
             exact
           >
-            <nav @click="menu = false">主页</nav>
+            <nav @click="menu = false">
+              主页
+            </nav>
           </nuxt-link>
-          <nuxt-link :to="`/library/`" title="洛丽塔图鉴"  class="base-menu-list" active-class="active">
-            <nav @click="menu = false">图鉴</nav>
+          <nuxt-link :to="`/library/`" title="洛丽塔图鉴" class="base-menu-list" active-class="active">
+            <nav @click="menu = false">
+              图鉴
+            </nav>
           </nuxt-link>
           <nuxt-link :to="`/shop/`" title="洛丽塔店铺" class="base-menu-list" active-class="active">
-            <nav  @click="menu = false">店铺</nav>
+            <nav @click="menu = false">
+              店铺
+            </nav>
           </nuxt-link>
           <nuxt-link :to="`/compilations/`" title="洛丽塔小裙子合集" class="base-menu-list" active-class="active">
-            <nav @click="menu = false">合集</nav>
+            <nav @click="menu = false">
+              合集
+            </nav>
           </nuxt-link>
           <nuxt-link :to="`/community/`" title="社区" class="base-menu-list" active-class="active">
-            <nav @click="menu = false">社区</nav>
+            <nav @click="menu = false">
+              社区
+            </nav>
           </nuxt-link>
           <nuxt-link :to="`/lolitaWiki/`" title="洛丽塔百科" class="base-menu-list" active-class="active">
-            <nav @click="menu = false">百科</nav>
+            <nav @click="menu = false">
+              百科
+            </nav>
           </nuxt-link>
           <!-- <a href="https://lolitalibrary.com/lolita.html" class="base-menu-list" title="lo研社旧版本" target="_blank" >
               <nav @click="menu = false">旧版</nav>
@@ -108,15 +122,16 @@
       </div>
       <nuxt />
     </div>
-    <BaseFooter class="base-footer"></BaseFooter>
+    <BaseFooter class="base-footer" />
     <el-dialog
       :visible.sync="loginout_dialog"
       width="300px"
-      center>
+      center
+    >
       <span style="text-align: center; display: block;">确定要退出登录吗？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="loginout_dialog = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="loginOut()" size="small">确 定</el-button>
+        <el-button size="small" @click="loginout_dialog = false">取 消</el-button>
+        <el-button type="primary" size="small" @click="loginOut()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -131,6 +146,9 @@ import {
   hasNotice
 } from '@/api/notice.js'
 export default {
+  components: {
+    BaseFooter
+  },
   data () {
     return {
       current: 0,
@@ -139,9 +157,6 @@ export default {
       has_notice: false,
       timer: null
     }
-  },
-  components: {
-    BaseFooter
   },
   mounted () {
     this.$store.commit('SET_IsMobile', this.isMobile())
@@ -211,7 +226,7 @@ export default {
   }
 }
 </script>
-<style type="text/css" lang="less">
+<style type="text/css" lang="less" scoped>
   .head-seat{
     height: 70px;
     width: 100%;

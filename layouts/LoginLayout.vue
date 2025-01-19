@@ -10,20 +10,20 @@
       </div>
       <nuxt />
     </div>
-    <BaseFooter class="base-footer"></BaseFooter>
+    <BaseFooter class="base-footer" />
   </div>
 </template>
 
 <script>
 import BaseFooter from '@/components/BaseFooter.vue'
 export default {
+  components: {
+    BaseFooter
+  },
   data () {
     return {
       current: 0
     }
-  },
-  components: {
-    BaseFooter
   },
   mounted () {
     this.$store.commit('SET_IsMobile', this.isMobile())
@@ -54,7 +54,7 @@ export default {
   }
 }
 </script>
-<style type="text/css" lang="less">
+<style type="text/css" lang="less" scoped>
   .head-seat{
     height: 70px;
     width: 100%;

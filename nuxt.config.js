@@ -17,7 +17,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no' },
-      { hid: 'description', name: 'description', content: 'Lolita图书馆,洛丽塔图书馆,洛丽塔交流社区,小裙子,Lo研社'},
+      { hid: 'description', name: 'description', content: 'Lolita图书馆,洛丽塔图书馆,洛丽塔交流社区,小裙子,Lo研社' },
       { name: 'format-detection', content: 'telephone=no' },
       { hid: 'keywords', name: 'keywords', content: 'Lolita图书馆,洛丽塔图书馆,洛丽塔交流社区,小裙子,Lo研社' }
     ],
@@ -51,7 +51,8 @@ export default {
     '@/assets/css/icon/iconfont.css',
     'quill/dist/quill.snow.css',
     'quill/dist/quill.bubble.css',
-    'quill/dist/quill.core.css'
+    'quill/dist/quill.core.css',
+    '@/assets/css/tailwind.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -109,6 +110,14 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
-    extractCSS: { allChunks: true }
+    extractCSS: { allChunks: true },
+    postcss: {
+      postcssOptions: {
+        plugins: {
+          tailwindcss: {},
+          autoprefixer: {},
+        },
+      },
+    }
   }
 }
