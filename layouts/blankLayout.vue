@@ -50,7 +50,7 @@ export default {
   }
 }
 </script>
-<style type="text/css" lang="less">
+<style type="text/css" lang="less" scoped>
   .head-seat{
     height: 70px;
     width: 100%;
