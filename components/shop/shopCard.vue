@@ -1,7 +1,7 @@
 <template>
-  <el-card class="!border-none rounded-md hover:shadow-lg transition-all duration-300">
+  <el-card class="!border-none rounded-md hover:shadow-lg transition-all duration-300 cursor-pointer" @click="$emit('toDetail',shop.shop_id,shop.shop_name)">
     <template>
-      <div class="flex gap-3">
+      <div class="flex gap-3" @click="$emit('toDetail',shop.shop_id,shop.shop_name)">
         <div class="w-24 h-24 object-cover rounded-md overflow-hidden flex-shrink-0">
           <thumbnail-img :url="shop.shop_logo" :title="shop.shop_name" :alt="shop.shop_name" class="w-full" />
         </div>
@@ -31,6 +31,7 @@ export default {
       type: Object,
       required: true
     }
-  }
+  },
+  emits: ['toDetail']
 }
 </script>

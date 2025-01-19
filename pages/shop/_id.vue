@@ -32,7 +32,13 @@
       </div>
     </div>
     <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-[10vw]">
-      <ShopCard v-for="(shop) in list" :key="shop.shop_id" :shop="shop" class="w-full" />
+      <ShopCard
+        v-for="(shop) in list"
+        :key="shop.shop_id"
+        :shop="shop"
+        class="w-full"
+        @toDetail="toDetail(shop.shop_id,shop.shop_name)"
+      />
     </div>
     <!-- <div v-for="(list, index) in list" :key="list.shop_id" class="shop-list">
         <div
