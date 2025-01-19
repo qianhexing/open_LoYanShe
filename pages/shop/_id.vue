@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white pt-20">
+  <div class="pub-background">
     <div class="head-seat" />
     <div class="library-head">
       <el-input
@@ -31,16 +31,8 @@
         <!-- <a href="https://lolitalibrary.com/lolita.html#/addLibrary" target="_blank"></a> -->
       </div>
     </div>
-    <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-[10vw]">
-      <ShopCard
-        v-for="(shop) in list"
-        :key="shop.shop_id"
-        :shop="shop"
-        class="w-full"
-        @toDetail="toDetail(shop.shop_id,shop.shop_name)"
-      />
-    </div>
-    <!-- <div v-for="(list, index) in list" :key="list.shop_id" class="shop-list">
+    <div class="shop-list-wrap">
+      <div v-for="(list, index) in list" :key="list.shop_id" class="shop-list">
         <div
           class="shop-list-info animate__animated animate__fadeInLeft"
           :style="{'animation-delay': (0.08 * index) + 's'}"
@@ -57,13 +49,13 @@
             </div>
           </span>
         </div>
-      </div> -->
+      </div>
+    </div>
     <PagingBox :total="total" :page-size="pageSize" :current="current" :to="'/shop/'" />
   </div>
 </template>
 
 <script>
-import ShopCard from '@/components/shop/shopCard.vue'
 import PagingBox from '@/components/PagingBox.vue'
 import system from '@/mixins/system'
 
@@ -74,7 +66,6 @@ const url = {
 }
 export default {
   components: {
-    ShopCard,
     PagingBox
   },
   mixins: [system],

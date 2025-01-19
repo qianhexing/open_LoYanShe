@@ -1,54 +1,44 @@
 <template>
   <div>
-    <div class="head-seat" />
+    <div class="head-seat"></div>
     <div v-if="!$store.state.app.isMobile" class="wardrobe-pc">
       <div class="wardrobe-wrap">
         <div class="wardrobe-left">
-          <div
-            ref="leftScrollWrap"
-            class="wardrobe-left-scroll"
-            @scroll="scrolle"
-          >
+          <div class="wardrobe-left-scroll"
+          @scroll="scrolle"
+          ref="leftScrollWrap">
             <div ref="leftScroll">
               <div class="clothes-wrap" :style="{ height: max_height + 'px' }">
-                <div
-                  v-for="(list, index) in list"
-                  :key="list.clothes_id"
-                  class="clothes-list-wrap"
-                  :style="{ transform: 'translate('+ (style_list[index] ? style_list[index].left + 'px' : '0px') + ',' + (style_list[index] ? style_list[index].top + 'px' : '0px') + ')' }"
-                >
-                  <div
-                    :class="clothes_id === list.clothes_id ? 'clothes-list active' : 'clothes-list'"
-                    @click="chooseClothes(list.clothes_id, list)"
-                  >
+                <div class="clothes-list-wrap"
+                v-for="(list, index) in list"
+                :key="list.clothes_id"
+                :style="{ transform: 'translate('+ (style_list[index] ? style_list[index].left + 'px' : '0px') + ',' + (style_list[index] ? style_list[index].top + 'px' : '0px') + ')' }">
+                  <div :class="clothes_id === list.clothes_id ? 'clothes-list active' : 'clothes-list'"
+                  @click="chooseClothes(list.clothes_id, list)">
                     <div class="clothes-cover">
                       <img :src="BASE_IMG + list.clothes_img" @load="waterfall()">
                     </div>
                     <div class="clothes-note">
-                      <span v-html="list.clothes_note" />
+                      <span v-html="list.clothes_note"></span>
                     </div>
                     <div class="qhx-tip">
                       <div class="qhx-date">
-                        {{ formatDate(list.date) }}
+                        {{formatDate(list.date)}}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <el-empty
-                v-show="total === 0 && !loading"
-                :image-size="100"
-                description="暂无数据"
-                style="padding-top: calc(50vh - 120px);"
-              />
-              <LoadMore
-                ref="loadMore"
-                :page="page"
-                :page-size="pageSize"
-                :loading="loading"
-                :total="total"
-                @loadMore="getWardrobeClothes()"
-              />
+              <el-empty :image-size="100"
+              v-show="total === 0 && !loading"
+              description="暂无数据"
+              style="padding-top: calc(50vh - 120px);"></el-empty>
+              <LoadMore :page="page"
+              :pageSize="pageSize"
+              :loading="loading"
+              :total="total"
+              ref="loadMore"
+              @loadMore="getWardrobeClothes()"></LoadMore>
             </div>
           </div>
         </div>
@@ -62,67 +52,61 @@
                 <div class="wardrobe-info">
                   <div class="wardrobe-name">
                     <el-tag size="mini" type="danger" effect="dark">
-                      {{ info.is_private == 0 ? '公开' : '私有' }}
+                      {{info.is_private == 0 ? '公开' : '私有'}}
                     </el-tag>
-                    {{ info.wardrobe_name }}
+                    {{info.wardrobe_name}}
                   </div>
-                  <div class="wardrobe-desc">
-                    {{ info.wardrobe_desc }}
-                  </div>
+                  <div class="wardrobe-desc">{{info.wardrobe_desc}}</div>
                   <el-switch
-                    v-if="$store.state.user.info && $store.state.user.info.user_id === info.user_id"
-                    v-model="info.is_private"
-                    active-text="私有"
-                    inactive-text="公开"
-                    :active-value="1"
-                    :inactive-value="0"
-                    :disabled="loading_private"
-                    @change="changePrivate"
-                  />
+                  v-if="$store.state.user.info && $store.state.user.info.user_id === info.user_id"
+                  v-model="info.is_private"
+                  active-text="私有"
+                  inactive-text="公开"
+                  :active-value="1"
+                  :inactive-value="0"
+                  @change="changePrivate"
+                  :disabled="loading_private">
+                  </el-switch>
                   <div class="qhx-tip">
                     <div class="qhx-date">
-                      {{ formatDate(info.create_date) }}
+                      {{formatDate(info.create_date)}}
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="$store.getters.getUserInfo && (info.user_id == $store.getters.getUserInfo.user_id)" class="fun-list">
-                <el-button type="primary" size="medium" @click="showEditWardrobe()">
-                  <i class="el-icon-edit" style="margin-right: 5px;" />
+              <div class="fun-list" v-if="$store.getters.getUserInfo && (info.user_id == $store.getters.getUserInfo.user_id)">
+                <el-button type="primary" @click="showEditWardrobe()" size="medium">
+                  <i class="el-icon-edit" style="margin-right: 5px;"></i>
                   修改衣柜
                 </el-button>
                 <el-button type="primary" size="medium" @click="showAddClothes()">
-                  <i class="el-icon-plus" style="margin-right: 5px;" />
+                  <i class="el-icon-plus" style="margin-right: 5px;"></i>
                   添加进衣柜
                 </el-button>
               </div>
             </div>
             <div v-else>
               <div>
-                <div v-if="clothes_info" class="clothes-info">
+                <div class="clothes-info" v-if="clothes_info">
                   <div class="clothes-cover">
                     <img :src="BASE_IMG + clothes_info.clothes_img" alt="">
                   </div>
                   <div class="clothes-right">
-                    <div class="clothes-name">
-                      {{ clothes_info.clothes_note }}
-                    </div>
+                    <div class="clothes-name">{{clothes_info.clothes_note}}</div>
                     <div class="qhx-tip">
-                      <div class="qhx-date">
-                        {{ formatDate(clothes_info.date) }}
-                      </div>
+                      <div class="qhx-date">{{formatDate(clothes_info.date)}}</div>
                     </div>
                   </div>
                 </div>
                 <div v-if="info">
-                  <div v-if="$store.getters.getUserInfo && (info.user_id == $store.getters.getUserInfo.user_id)" class="fun-list">
-                    <el-button type="primary" size="medium" @click="showAddNemory()">
-                      <i class="el-icon-plus" style="margin-right: 5px;" />
+                  <div class="fun-list" v-if="$store.getters.getUserInfo && (info.user_id == $store.getters.getUserInfo.user_id)">
+                    <el-button type="primary" @click="showAddNemory()" size="medium">
+                      <i class="el-icon-plus" style="margin-right: 5px;"></i>
                       新增记忆
                     </el-button>
                   </div>
                 </div>
-                <wardrobeMemory v-if="clothes_id" ref="wardrobeMemory" :clothes_id="clothes_id" />
+                <wardrobeMemory ref="wardrobeMemory" :clothes_id="clothes_id" v-if="clothes_id"></wardrobeMemory>
               </div>
             </div>
           </div>
@@ -131,101 +115,90 @@
     </div>
     <div v-else>
       <div class="wardrobe-wrap-m">
-        <div v-if="info && !clothes_id" class="wardrobe-info-wrap">
+        <div class="wardrobe-info-wrap" v-if="info && !clothes_id">
           <div class="wardrobe-cover">
             <img :src="BASE_IMG + (info.wardrobe_cover ? info.wardrobe_cover : '/static/plan_cover/default.jpg')">
           </div>
           <div class="wardrobe-info">
             <div class="wardrobe-name">
               <el-tag size="mini" type="danger" effect="dark">
-                {{ info.is_private == 0 ? '公开' : '私有' }}
+                {{info.is_private == 0 ? '公开' : '私有'}}
               </el-tag>
-              {{ info.wardrobe_name }}
+              {{info.wardrobe_name}}
             </div>
-            <div class="wardrobe-desc">
-              {{ info.wardrobe_desc }}
-            </div>
+            <div class="wardrobe-desc">{{info.wardrobe_desc}}</div>
             <el-switch
-              v-if="$store.state.user.info && $store.state.user.info.user_id === info.user_id"
-              v-model="info.is_private"
-              active-text="私有"
-              inactive-text="公开"
-              :active-value="1"
-              :inactive-value="0"
-              :disabled="loading_private"
-              @change="changePrivate"
-            />
+            v-if="$store.state.user.info && $store.state.user.info.user_id === info.user_id"
+            v-model="info.is_private"
+            active-text="私有"
+            inactive-text="公开"
+            :active-value="1"
+            :inactive-value="0"
+            @change="changePrivate"
+            :disabled="loading_private">
+            </el-switch>
             <div class="qhx-tip">
               <div class="qhx-date">
-                {{ formatDate(info.create_date) }}
+                {{formatDate(info.create_date)}}
               </div>
             </div>
           </div>
         </div>
-        <div v-if="$store.getters.getUserInfo && (info.user_id == $store.getters.getUserInfo.user_id)" class="fun-list" style="display: flex; justify-content: center;">
-          <el-button type="primary" size="medium" @click="showEditWardrobe()">
-            <i class="el-icon-edit" style="margin-right: 5px;" />
+        <div class="fun-list" v-if="$store.getters.getUserInfo && (info.user_id == $store.getters.getUserInfo.user_id)" style="display: flex; justify-content: center;">
+          <el-button type="primary" @click="showEditWardrobe()" size="medium">
+            <i class="el-icon-edit" style="margin-right: 5px;"></i>
             修改衣柜
           </el-button>
           <el-button type="primary" size="medium" @click="showAddClothes()">
-            <i class="el-icon-plus" style="margin-right: 5px;" />
+            <i class="el-icon-plus" style="margin-right: 5px;"></i>
             添加进衣柜
           </el-button>
         </div>
         <div class="clothes-wrap" :style="{ height: max_height + 'px' }">
-          <div
-            v-for="(list, index) in list"
-            :key="list.clothes_id"
-            class="clothes-list-wrap"
-            :style="{ transform: 'translate('+ (style_list[index] ? style_list[index].left + 'px' : '0px') + ',' + (style_list[index] ? style_list[index].top + 'px' : '0px') + ')' }"
-          >
+          <div class="clothes-list-wrap"
+          v-for="(list, index) in list"
+          :key="list.clothes_id"
+          :style="{ transform: 'translate('+ (style_list[index] ? style_list[index].left + 'px' : '0px') + ',' + (style_list[index] ? style_list[index].top + 'px' : '0px') + ')' }">
             <div :class="clothes_id === list.clothes_id ? 'clothes-list active' : 'clothes-list'">
               <div class="clothes-cover">
                 <img :src="BASE_IMG + list.clothes_img" @load="waterfall()">
               </div>
               <div class="clothes-note">
-                <span v-html="list.clothes_note" />
+                <span v-html="list.clothes_note"></span>
               </div>
               <div class="qhx-tip">
                 <div class="qhx-date">
-                  {{ formatDate(list.date) }}
+                  {{formatDate(list.date)}}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <el-empty
-          v-show="total === 0 && !loading"
-          :image-size="100"
-          description="暂无数据"
-          style="padding-top: calc(50vh - 300px);"
-        />
-        <LoadMore
-          ref="loadMore"
-          :page="page"
-          :page-size="pageSize"
-          :loading="loading"
-          :total="total"
-          @loadMore="getWardrobeClothes()"
-        />
+        <el-empty :image-size="100"
+        v-show="total === 0 && !loading"
+        description="暂无数据"
+        style="padding-top: calc(50vh - 300px);"></el-empty>
+        <LoadMore :page="page"
+        :pageSize="pageSize"
+        :loading="loading"
+        :total="total"
+        ref="loadMore"
+        @loadMore="getWardrobeClothes()"></LoadMore>
       </div>
     </div>
     <editWardrobe
-      ref="editWardrobe"
-      :wardrobe_id="id"
-      :wardrobe_info="info"
-      @success="changeWardrobe"
-    />
-    <addMemory
-      ref="addMemory"
-      :clothes_id="clothes_id"
-      @success="reladMemory"
-    />
-    <addClothes
-      ref="addClothes"
-      :wardrobe_id="id"
-      @success="reload"
-    />
+    ref="editWardrobe"
+    :wardrobe_id="id"
+    :wardrobe_info="info"
+    @success="changeWardrobe">
+    </editWardrobe>
+    <addMemory ref="addMemory"
+    :clothes_id="clothes_id"
+    @success="reladMemory">
+    </addMemory>
+    <addClothes ref="addClothes"
+    :wardrobe_id="id"
+    @success="reload"></addClothes>
   </div>
 </template>
 
@@ -238,13 +211,6 @@ import editWardrobe from '../../components/wardrobe/addWardrobe.vue'
 import addClothes from '../../components/wardrobe/addClothes.vue'
 import addMemory from '@/components/wardrobe/addMemory.vue'
 export default {
-  components: {
-    wardrobeMemory,
-    editWardrobe,
-    addClothes,
-    addMemory
-  },
-  layout: 'UserLayout',
   data () {
     return {
       list: [],
@@ -260,6 +226,13 @@ export default {
       clothes_info: null
     }
   },
+  components: {
+    wardrobeMemory,
+    editWardrobe,
+    addClothes,
+    addMemory
+  },
+  layout: 'UserLayout',
   mounted () {
     this.getWardrobeClothes()
   },
