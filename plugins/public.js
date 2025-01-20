@@ -47,3 +47,16 @@ export function formatCommunity (text) {
   text = text.replace(regex, replacement)
   return text
 }
+// 获取地址后缀名
+export function getFileExtension (filePath) {
+  // 获取文件扩展名
+  if (!filePath) {
+    return null
+  }
+  const extname = filePath.split('.').pop().toLowerCase()
+  // 如果没有扩展名，返回 null
+  if (extname === filePath) {
+    return null
+  }
+  return extname
+}
