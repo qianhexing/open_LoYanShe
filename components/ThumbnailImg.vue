@@ -3,6 +3,7 @@
 </template>
 <script >
 import Vue from 'vue'
+import { getFileExtension } from '@/plugins/public.js'
 
 export default {
   components: {},
@@ -18,6 +19,10 @@ export default {
     imageSize: {
       type: Number,
       default: 300
+    },
+    quality: {
+      type: Number,
+      default: 80
     }
   },
   data () {
@@ -26,7 +31,12 @@ export default {
   },
   computed: {
     thumbnailUrl () {
-      return `${Vue.prototype.BASE_IMG}${this.url}?x-oss-process=image/quality,q_80/resize,w_${this.imageSize}`
+      const file_type = getFileExtension(this.url)
+      if (file_type === 'gif') {
+        return `${Vue.prototype.BASE_IMG}${this.url}`
+      } else {
+        return `${Vue.prototype.BASE_IMG}${this.url}?x-oss-process=image/quality,q_${this.quality}/resize,w_${this.imageSize}`
+      }
     }
   },
   watch: {
