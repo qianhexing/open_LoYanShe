@@ -1,36 +1,38 @@
 <template>
   <div>
     <div class="comp-detail-wrap" v-if="compilations">
-      <div class="comp-back" :style="{background: 'url(' + BASE_IMG + compilations.comp_cover +')', 'background-size': 'cover'}"></div>
+      <div class="comp-back"
+           :style="{background: 'url(' + BASE_IMG + compilations.comp_cover +')', 'background-size': 'cover'}"
+      ></div>
       <div class="head-seat"></div>
       <div class="comp-detail-box">
         <div class="comp-detail-left">
           <div class="comp-detail-info">
             <div class="comp-detail-cover">
-              <img :src="BASE_IMG + compilations.comp_cover" >
+              <img :src="BASE_IMG + compilations.comp_cover">
             </div>
             <div class="qhx-title" style="color: #f56c6c;">
-              {{compilations.comp_name}}
+              {{ compilations.comp_name }}
             </div>
             <div class="qhx-text">
-              {{compilations.comp_describe}}
+              {{ compilations.comp_describe }}
             </div>
             <div class="qhx-title" style="color: #f56c6c;">
               合集管理员
             </div>
             <div class="comp-admin">
               <div class="comp-admin-face">
-                <img :src="BASE_IMG + compilations.user_face" >
+                <img :src="BASE_IMG + compilations.user_face">
               </div>
               <div class="comp-admin-info">
                 <div class="comp-admin-name">
-                  {{compilations.user_name}}
+                  {{ compilations.user_name }}
                 </div>
-                <el-tag size="mini" type="danger">UID {{compilations.user_id}}</el-tag>
+                <el-tag size="mini" type="danger">UID {{ compilations.user_id }}</el-tag>
               </div>
             </div>
             <div class="qhx-text">
-              <el-tag size="mini" type="warning">合集收录 {{total}}</el-tag>
+              <el-tag size="mini" type="warning">合集收录 {{ total }}</el-tag>
             </div>
             <div class="qhx-title" style="color: #f56c6c;">
               评论区
@@ -46,10 +48,11 @@
         <div class="comp-detail-right">
           <LibraryList :list="library_list"></LibraryList>
           <LoadMore :page="page"
-          :pageSize="pageSize"
-          :loading="loading"
-          :total="total"
-          @loadMore="getLibraryList()"></LoadMore>
+                    :pageSize="pageSize"
+                    :loading="loading"
+                    :total="total"
+                    @loadMore="getLibraryList()"
+          ></LoadMore>
         </div>
       </div>
     </div>
@@ -59,6 +62,7 @@
 <script>
 import LibraryList from '@/components/library/LibraryList.vue'
 import LoadMore from '@/components/LoadMore.vue'
+
 export default {
   data () {
     return {
@@ -115,7 +119,10 @@ export default {
     }
   },
   layout: 'BaseLayout',
-  async asyncData ({ $axios, params }) {
+  async asyncData ({
+    $axios,
+    params
+  }) {
     const id = params.id
     const res = await $axios({
       method: 'post',
@@ -147,79 +154,93 @@ export default {
 </script>
 
 <style scoped lang="less">
-  .comp-detail-wrap{
-    position: relative;
-    .comp-back{
-      width: 100%;
-      height: 100vh;
-      position: fixed;
-      z-index: -1;
-    }
+.comp-detail-wrap {
+  position: relative;
+
+  .comp-back {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: -1;
   }
-  .comp-detail-box{
-    .comp-detail-left{
-      .comp-detail-info{
-        padding: 20px;
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 1px 1px 10px #ccc;
-        border-radius: 5px;
-        .comp-detail-cover{
+}
+
+.comp-detail-box {
+  .comp-detail-left {
+    .comp-detail-info {
+      padding: 20px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 1px 1px 10px #ccc;
+      border-radius: 5px;
+
+      .comp-detail-cover {
+        width: 100%;
+
+        img {
           width: 100%;
-          img{
+        }
+      }
+
+      .comp-admin {
+        display: flex;
+        align-items: center;
+
+        .comp-admin-face {
+          width: 50px;
+          height: 50px;
+          overflow: hidden;
+          margin: 10px;
+          border-radius: 50%;
+
+          img {
             width: 100%;
           }
         }
-        .comp-admin{
-          display: flex;
-          align-items: center;
-          .comp-admin-face{
-            width: 50px;
-            height: 50px;
-            overflow: hidden;
-            margin: 10px;
-            border-radius: 50%;
-            img{
-              width: 100%;
-            }
-          }
-          .comp-admin-info{
-            .comp-admin-name{
-              font-weight: bolder;
-              margin: 5px 0;
-              color: #f56c6c;
-            }
+
+        .comp-admin-info {
+          .comp-admin-name {
+            font-weight: bolder;
+            margin: 5px 0;
+            color: #f56c6c;
           }
         }
       }
     }
-    .comp-detail-right{
-      background: rgba(255, 255, 255, 1);
-      padding-top: 20px;
-      border-radius: 5px;
+  }
+
+  .comp-detail-right {
+    background: rgba(255, 255, 255, 1);
+    padding-top: 20px;
+    border-radius: 5px;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .comp-detail-box {
+    display: flex;
+    margin: 25px 20px;
+    flex-direction: row-reverse;
+
+    .comp-detail-info {
+      width: 420px;
+    }
+
+    .comp-detail-right {
+      margin-right: 10px;
+      flex: 1;
     }
   }
-  @media screen and (min-width: 750px) {
-    .comp-detail-box{
-      display: flex;
-      margin: 25px 20px;
-      flex-direction: row-reverse;
-      .comp-detail-info{
-        width: 420px;
-      }
-      .comp-detail-right{
-        margin-right: 10px;
-        flex: 1;
-      }
+}
+
+@media screen and (max-width: 750px) {
+  .comp-detail-box {
+    .comp-detail-left {
+      margin-top: 25px;
+    }
+
+    .comp-detail-right {
+      margin-top: 15px;
     }
   }
-  @media screen and (max-width: 750px) {
-    .comp-detail-box{
-      .comp-detail-left{
-        margin-top: 25px;
-      }
-      .comp-detail-right{
-        margin-top: 15px;
-      }
-    }
-  }
+}
 </style>

@@ -28,7 +28,8 @@
         <section class="library-list animate__animated animate__slideInLeft" :style="{'animation-delay': (0.15 * index) + 's'}">
           <div style="display: flex;">
             <div class="library-cover" v-if="list.square_cover && list.square_cover !== ''" @click="previewImage([list.cover], 0)">
-              <img :src="BASE_IMG + list.square_cover" alt="" :title="list.name">
+<!--              <img :src="BASE_IMG + list.square_cover" alt="" :title="list.name">-->
+              <thumbnail-img :url="list.square_cover" :title="list.name" alt=""/>
             </div>
             <div v-else class="library-cover" @click="previewImage([list.cover], 0)">
               <img v-lazy="BASE_IMG + list.cover" alt="" :title="list.name">
@@ -72,7 +73,8 @@
               <nuxt-link v-if="list.shop" :to="`/shop/detail/` + list.shop.shop_id" :title="list.shop_name" class="base-nav-list" active-class="active">
                 <div class="shop-info">
                   <div class="shop-logo">
-                    <img :src="BASE_IMG + list.shop.shop_logo" :title="list.shop_name" />
+<!--                    <img :src="BASE_IMG + list.shop.shop_logo" :title="list.shop_name" />-->
+                    <thumbnail-img :url="list.shop.shop_logo" :title="list.shop_name" alt=""/>
                   </div>
                   <div class="shop-name">{{list.shop.shop_name}}</div>
                 </div>

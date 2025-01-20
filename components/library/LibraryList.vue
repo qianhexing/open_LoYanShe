@@ -6,10 +6,12 @@
     :style="{'animation-delay': (0.15 * (index % 20)) + 's', 'width': listWidth}">
       <section class="library-list">
         <div class="library-cover" v-if="list.square_cover && list.square_cover !== ''" @click="handleShowImage([list.cover], 0)">
-          <img v-lazy="BASE_IMG + list.square_cover" alt="" :title="list.name">
+<!--          <img v-lazy="BASE_IMG + list.square_cover" alt="" :title="list.name">-->
+          <thumbnail-img :url="list.square_cover" :title="list.name" alt=""/>
         </div>
         <div class="library-cover" v-else @click="handleShowImage([list.cover], 0)">
-          <img v-lazy="BASE_IMG + list.cover" alt="" :title="list.name">
+<!--          <img v-lazy="BASE_IMG + list.cover" alt="" :title="list.name">-->
+          <thumbnail-img :url="list.square_cover" :title="list.name" alt=""/>
         </div>
         <div class="library-info">
           <nuxt-link :to="`/library/detail/` + list.library_id" title="洛丽塔图书馆" target="_blank">
@@ -55,7 +57,7 @@
           v-if="needShop">
             <div class="shop-info">
               <div class="shop-logo">
-                <img v-lazy="BASE_IMG + list.shop_logo" :title="list.shop_name" />
+                <thumbnail-img :url="list.shop_logo" :title="list.shop_name" alt=""/>
               </div>
               <div class="shop-name">{{list.shop_name}}</div>
             </div>
