@@ -1,7 +1,7 @@
 <template>
   <div class="base-footer">
     <a href="https://beian.miit.gov.cn/" target="_blank" class="base-footer-a"><img src="https://lolitalibrary.com/static/batb.png" > 闽ICP备19007279号-1</a>
-    <div>qq群： 679654177 联系我 qq账号：3292658709 <a href="https://weibo.com/u/6052516131" style="color: #409EFF;" target="_blank">@千河星</a></div>
+    <div>qq群： 679654177 联系我 qq账号：3292658709 <a href="https://weibo.com/u/6052516131" style="color: #409EFF;" target="_blank">@千河星</a> <p>IP地址位置数据由<a href="https://www.cz88.net">纯真CZ88</a>提供支持</p></div>
   </div>
 </template>
 
