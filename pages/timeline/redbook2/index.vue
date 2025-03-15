@@ -11,32 +11,20 @@
     <el-button @click="downimage()">下载全部</el-button>
     <div v-if="result">
       <div class="library-list" v-for="(list, index) in result" style="display: flex; border: 1px solid #faa2ae; background: #f2e7e9; width: 902px; height: 1220px;" :key="index">
-        <div v-for="(item, index2) in list.library" :key="index2" class="list" :style="((index2) % 4) < 2 ? {} : { flexDirection: 'row-reverse' }">
-          <div class="library-cover">
-            <img :src="'https://lolitalibrary.com/ali/' + item.cover" alt="">
-          </div>
-          <div class="library-info">
+        <div v-for="(list2, index2) in list" :key="index2">
+          <div v-for="item in list2" :key="item.library_id" style="width: calc(300px - 14px);margin: 5px; border-radius: 10px; border: 2px solid #faa2ae; overflow: hidden; position: relative">
+            <!-- <img :src="BASE_IMG + item.cover" alt="" style="width: calc(300px - 14px);"> -->
+            <img :src="'https://lolitalibrary.com/ali/' + item.cover" alt="" :style="{width: item.width + 'px', transform: `translateX(-${(item.width - 290) / 2}px)`}">
             <h1 class="library-name">
               <div size="mini" style="background: #faa2ae; color: #000; position: absolute; top: 0; left: 0; border: none; padding: 0 15px; font-size: 14px; line-height: 25px;">
+                <span>编号{{ item.library_id }} </span>
                 <span v-for="(child, child_index) in item.child" :key="child_index">{{ child.library_type }} 🥕 {{ child.library_price }} | </span>
               </div>
+              <!-- <el-tag size="mini" style="background: #faa2ae; color: #000; position: absolute; top: 0; left: 0; border: none; padding: 0 15px; height: 25px; line-height: 25px;">{{item.shop_country == 0 ? '国牌' : '日牌'}}</el-tag> -->
               <el-tag size="mini" v-show="item.library_type !== '系列'" style="background: #faa2ae; color: #000; position: absolute; top: 28px; left: 0; border: none; padding: 0 15px; height: 25px; line-height: 25px;">{{ item.library_type }}</el-tag>
-              <nobr v-show="item.library_price" style="color: #d22d43;">🥕{{item.library_price}} {{item.shop_country == 0 ? '' : '日元'}}</nobr>
+              <nobr v-show="item.library_price" style="color: #faa2ae;">￥{{item.library_price}} {{item.shop_country == 0 ? '' : '日元'}}</nobr>
               {{item.name}}
             </h1>
-            <div class="info-list">
-              <span>类型: {{ item.library_type }} </span>
-            </div>
-            <div class="info-list">
-              <span>编号: {{ item.library_id }} </span>
-            </div>
-            <div class="info-list" style="color: #d22d43;">
-              <span v-if="item.state === '预约中'">{{ dayjs(item.start_time).format('MM-DD') }} 到 {{ dayjs(item.end_time).format('MM-DD') }}</span>
-              <span v-else>{{ dayjs(item.arrears_start).format('MM-DD') }} 到 {{ dayjs(item.arrears_end).format('MM-DD') }}</span>
-            </div>
-            <div v-if="item.child" class="info-list" style="font-size: 12px;">
-              {{ item.child }}
-            </div>
             <div class="shop-info">
               <div class="shop-logo">
                 <img :src="'https://lolitalibrary.com/ali/' + item.shop.shop_logo" :title="item.shop_name" />
@@ -45,18 +33,13 @@
                 {{item.shop.shop_name}}
               </div>
             </div>
-            <div class="info-list" v-if="item.design_elements">
-              <span>设计: {{ item.design_elements }} </span>
-            </div>
-            <div class="info-list" v-if="item.pattern_elements">
-              <span>柄图: {{ item.pattern_elements }} </span>
-            </div>
           </div>
         </div>
       </div>
-      <!-- <div class="library-list-text" v-for="(list, index) in result" :key="index">
+      <div class="library-list-text" v-for="(list, index) in result" :key="index">
         <div v-for="(list2, index2) in list" :key="index2">
           <div v-for="item in list2" :key="item.library_id">
+            <!-- <img :src="BASE_IMG + item.cover" alt="" style="width: calc(300px - 14px);"> -->
             <div>
               <div>编号: {{ item.library_id }}</div>
               <div>
@@ -76,7 +59,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -85,7 +68,7 @@
 // import { setLoginType, loginIn } from '../../api/user.js'
 import html2canvas from 'html2canvas'
 import { getLibraryList } from '@/api/library'
-// import { getImageInfo } from '@/api/file'
+import { getImageInfo } from '@/api/file'
 export default {
   data () {
     return {
@@ -279,7 +262,7 @@ export default {
             field: 'appointment_time'
           }
         ],
-        mode: 2
+        mode: 1
       }
       if (this.activeName === '0') {
         params.filter_list = [
@@ -306,57 +289,27 @@ export default {
         })
       }
       getLibraryList(params)
-        .then((res) => {
+        .then(async (res) => {
           if (res.code === 200) {
             const data = res.data
             if (data.rows.length > 0) {
               const rows = []
               for (let i = 0; i < data.rows.length; i++) {
                 const item = data.rows[i]
-                // try {
-                //   const image_info = await getImageInfo({
-                //     url: item.cover
-                //   })
-                //   item.width = 300 - 14
-                //   item.height = (item.width * image_info.data.ImageHeight.value / image_info.data.ImageWidth.value) + 67
-                //   console.log(item.height, '高度')
-                // } catch (error) {
-                // }
+                try {
+                  const image_info = await getImageInfo({
+                    url: item.cover
+                  })
+                  item.width = 300 - 14
+                  item.height = (item.width * image_info.data.ImageHeight.value / image_info.data.ImageWidth.value) + 67
+                  console.log(item.height, '高度')
+                } catch (error) {
+                }
                 rows.push(item)
               }
-              const result = []
-              let tem = {
-                library: []
-              }
-              rows.forEach((item, index) => {
-                if (item.child && item.child.length > 0) {
-                  const child = []
-                  item.child.forEach((child_item) => {
-                    const index = child.findIndex((child2) => {
-                      return child2.library_type === child_item.library_type
-                    })
-                    if (index === -1) {
-                      if (child_item.library_price) {
-                        child.push(child_item)
-                      }
-                    }
-                  })
-                  item.child = child.map((element) => {
-                    // eslint-disable-next-line
-                    return `★${element.library_type}:${element.library_price}${item.shop_country == 0 ? '' : '日元'}`
-                  }).join()
-                }
-                tem.library.push(item)
-                if (tem.library.length >= 8) {
-                  result.push(tem)
-                  tem = {
-                    library: []
-                  }
-                }
-              })
-              // const result = this.adjustContainersToFillHeight(this.arrangeImagesInContainers(rows, 3, 1200), 1200)
+              const result = this.adjustContainersToFillHeight(this.arrangeImagesInContainers(rows, 3, 1200), 1200)
               this.result = result
-              // console.log(result, '排序结果')
+              console.log(result, '排序结果')
               // if (page === 1) {
               //   this.list = rows
               // } else {
@@ -392,22 +345,24 @@ export default {
 }
 .library-name{
   font-size: 16px;
-  font-weight: normal;
+  font-weight: bolder;
   color: #000000;
-  margin: 10px 0;
-  font-size: 16px;
+  margin: 0px 0;
+  font-size: 18px;
   transition: 0.3s;
+  text-align: center;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   margin-top: 0px;
-}
-.info-list{
-  font-size: 14px;
-  margin: 5px 0;
-  letter-spacing: 2px;
 }
 .shop-info{
   display: flex;
   align-items: center;
-  // margin: 0px 5px 5px 5px;
+  margin: 0px 5px 5px 5px;
   color: #000000;
   transition: 0.3s;
   .shop-logo{
@@ -423,42 +378,14 @@ export default {
   .shop-name{
     flex: 1;
     margin-left: 10px;
-    // font-weight: bold;
+    font-weight: bold;
     word-break: break-all;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
   }
-}
-.list{
-  width: calc(50% - 10px);
-  display: flex;
-  overflow: hidden;
-  padding: 5px;
-  background: rgba(255, 255, 255, 0.6);
-  height: calc(100%/4 - 10px);
-  .library-info{
-    flex: 1;
-    padding: 5px;
-  }
-  .library-cover{
-    width: 60%;
-    height: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-}
-.library-list{
-  flex-wrap: wrap;
-  background: url('https://lolitalibrary.com/ali/ssr/baozi.jpg') no-repeat !important;
-  background-size: cover !important;
 }
 .library-list-wrap{
     transition: 0.3s;
@@ -467,7 +394,6 @@ export default {
       box-shadow: 2px 2px 10px #CCCCCC;
       background: #fff;
       border-radius: 10px;
-      flex-wrap: wrap;
       .library-cover{
         cursor: pointer;
         overflow: hidden;
