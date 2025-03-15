@@ -25,7 +25,7 @@
               </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="父级图鉴" prop="parent_id" v-if="library.library_type!=='系列'">
+        <el-form-item label="上级图鉴" prop="parent_id" v-if="library.library_type!=='系列'">
           <el-tag v-if="library.parent_id" closable @close="library.parent_id = null">{{ library.parent_id.name }}</el-tag>
           <el-button type="primary" size="mini" @click="showSelectLibrary()">选择图鉴</el-button>
         </el-form-item>
@@ -125,8 +125,7 @@
               remote
               multiple
               reserve-keyword
-              allow-create
-              placeholder="请输入版型/部位"
+              placeholder="请输入主题"
               :remote-method="getTheme"
               :loading="loading"
               class="add-select">
@@ -145,7 +144,6 @@
               remote
               multiple
               reserve-keyword
-              allow-create
               placeholder="请输入版型/部位"
               :remote-method="getLibraryPattern"
               :loading="loading"
@@ -163,7 +161,6 @@
               v-model="library.color"
               multiple
               filterable
-              allow-create
               default-first-option
               placeholder="请选择颜色"
               class="add-select"
@@ -213,8 +210,8 @@
               filterable
               remote
               multiple
-              reserve-keyword
               allow-create
+              reserve-keyword
               placeholder="请输入关键词"
               :remote-method="getPatternElements"
               :loading="loading"
@@ -234,7 +231,6 @@
               remote
               multiple
               reserve-keyword
-              allow-create
               placeholder="请输入关键词"
               :remote-method="getDesignElements"
               :loading="loading"
@@ -258,7 +254,6 @@
               remote
               multiple
               reserve-keyword
-              allow-create
               placeholder="请输入关键词"
               :remote-method="getClothElements"
               :loading="loading"
@@ -278,7 +273,6 @@
               remote
               multiple
               reserve-keyword
-              allow-create
               placeholder="请输入关键词"
               :remote-method="getClothElements"
               :loading="loading"
